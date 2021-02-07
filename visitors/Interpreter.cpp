@@ -305,9 +305,7 @@ void Interpreter::UnsetTosValue() {
 }
 
 int Interpreter::GetResult(Program *program) {
-    // std::cout << "START" << std::endl;
     UnsetTosValue();
     Visit(program);
-    // std::cout << "END" << std::endl;
     return 0;
 }
