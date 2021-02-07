@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(Visitor)
+project(Interpreter)
 set(
     HEADERS
     driver.hh
@@ -15,21 +15,21 @@ set(CMAKE_CXX_STANDARD 17)
 BISON_TARGET(
     ParserVisitor
     parser.y
-    ${Visitor_SOURCE_DIR}/parser.cpp
+    ${Interpreter_SOURCE_DIR}/parser.cpp
     COMPILE_FLAGS --graph
-    DEFINES_FILE ${Visitor_SOURCE_DIR}/parser.hh
+    DEFINES_FILE ${Interpreter_SOURCE_DIR}/parser.hh
 )
 
 FLEX_TARGET(
     ScannerVisitor
     scanner.l
-    ${Visitor_SOURCE_DIR}/scanner.cpp
+    ${Interpreter_SOURCE_DIR}/scanner.cpp
 )
 
 ADD_FLEX_BISON_DEPENDENCY(ScannerVisitor ParserVisitor)
 
 add_executable(
-    VisitorExecutable
+    MiniJava
     main.cpp
     driver.cpp
     ${BISON_ParserVisitor_OUTPUTS}
@@ -54,17 +54,17 @@ add_executable(
 )
 
 target_include_directories(
-    VisitorExecutable PRIVATE ${Visitor_SOURCE_DIR}
+    MiniJava PRIVATE ${Interpreter_SOURCE_DIR}
 )
 
 add_custom_target(
     VisitorTree
-    COMMAND dot -Tpng ${Visitor_SOURCE_DIR}/parser.gv -o ${Visitor_SOURCE_DIR}/parser.png
+    COMMAND dot -Tpng ${Interpreter_SOURCE_DIR}/parser.gv -o ${Interpreter_SOURCE_DIR}/parser.png
     
-    DEPENDS ${Visitor_SOURCE_DIR}/parser.cpp
+    DEPENDS ${Interpreter_SOURCE_DIR}/parser.cpp
 )
 
-add_dependencies(VisitorExecutable VisitorTree)
+add_dependencies(MiniJava VisitorTree)
 
 
 
