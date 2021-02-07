@@ -1,5 +1,7 @@
 location.hh
 parser.cpp
+parser.gv
+parser.png
 parser.hh
 scanner.cpp
 .vscode/

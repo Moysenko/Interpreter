@@ -1,43 +1,70 @@
-project(MyInterpreter)
 cmake_minimum_required(VERSION 3.16)
 
+project(Visitor)
 set(
     HEADERS
-    ${MyInterpreter_SOURCE_DIR}/driver.hh
-    ${MyInterpreter_SOURCE_DIR}/parser.hh
+    driver.hh
+    parser.hh
     )
 
 find_package(FLEX REQUIRED)
 find_package(BISON REQUIRED)
-
-set(CMAKE_CXX_STANDARD 14)
-
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${MyInterpreter_SOURCE_DIR}/bin)
-
     
+set(CMAKE_CXX_STANDARD 17)
+
 BISON_TARGET(
-    MyParser
+    ParserVisitor
     parser.y
-    ${MyInterpreter_SOURCE_DIR}/parser.cpp
-    DEFINES_FILE ${MyInterpreter_SOURCE_DIR}/parser.hh
+    ${Visitor_SOURCE_DIR}/parser.cpp
+    COMPILE_FLAGS --graph
+    DEFINES_FILE ${Visitor_SOURCE_DIR}/parser.hh
 )
 
 FLEX_TARGET(
-    MyScanner
+    ScannerVisitor
     scanner.l
-    ${MyInterpreter_SOURCE_DIR}/scanner.cpp
+    ${Visitor_SOURCE_DIR}/scanner.cpp
 )
 
-ADD_FLEX_BISON_DEPENDENCY(MyScanner MyParser)
+ADD_FLEX_BISON_DEPENDENCY(ScannerVisitor ParserVisitor)
 
 add_executable(
-    MyInterpreter
+    VisitorExecutable
     main.cpp
     driver.cpp
-    ${BISON_MyParser_OUTPUTS}
-    ${FLEX_MyScanner_OUTPUTS}
+    ${BISON_ParserVisitor_OUTPUTS}
+    ${FLEX_ScannerVisitor_OUTPUTS}
+    types/Types.cpp
+    expressions/NumberExpression.cpp
+    expressions/StringExpression.cpp
+    expressions/BoolExpression.cpp
+    expressions/Operators.cpp
+    expressions/IdentExpression.cpp
+    assignments/Assignment.cpp
+    assignments/AssignmentList.cpp
+    statements/Statement.cpp
+    statements/StatementSequence.cpp
+    if_statement/IfStatement.cpp
+    loops/WhileLoop.cpp
+    loops/ForLoop.cpp
+    system_out/Printer.cpp
+    instantiations/Instantiation.cpp
+    visitors/Interpreter.cpp
+    Program.cpp
 )
-target_include_directories(MyInterpreter PRIVATE ${MyInterpreter_SOURCE_DIR})
+
+target_include_directories(
+    VisitorExecutable PRIVATE ${Visitor_SOURCE_DIR}
+)
+
+add_custom_target(
+    VisitorTree
+    COMMAND dot -Tpng ${Visitor_SOURCE_DIR}/parser.gv -o ${Visitor_SOURCE_DIR}/parser.png
+    
+    DEPENDS ${Visitor_SOURCE_DIR}/parser.cpp
+)
+
+add_dependencies(VisitorExecutable VisitorTree)
 
 
 
