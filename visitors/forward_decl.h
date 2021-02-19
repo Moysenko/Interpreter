@@ -1,0 +1,27 @@
+#pragma once
+
+class Expression;
+class NumberExpression;
+class StringExpression;
+class BoolExpression;
+class AddExpression;
+class AndExpression;
+class OrExpression;
+class LessExpression;
+class EqualExpression;
+class NotEqualExpression;
+class NegExpression;
+class SubstractExpression;
+class MulExpression;
+class DivExpression;
+class IdentExpression;
+class Instantiation;
+class Assignment;
+class AssignmentList;
+class Statement;
+class StatementSequence;
+class IfStatement;
+class WhileLoop;
+class ForLoop;
+class Printer;
+class Program;
