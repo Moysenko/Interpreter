@@ -1,4 +1,0 @@
-/home/moysenko/Botalka/Projects/Interpreter/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/moysenko/Botalka/Projects/Interpreter/cmake-build-debug/CMakeFiles/VisitorTree.dir
-/home/moysenko/Botalka/Projects/Interpreter/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/moysenko/Botalka/Projects/Interpreter/cmake-build-debug/CMakeFiles/MiniJava.dir
