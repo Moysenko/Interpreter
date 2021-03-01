@@ -1,14 +1,14 @@
-//
-// Created by moysenko on 01.03.2021.
-//
+#pragma once
 
-#ifndef INTERPRETER_FIELDINVOCATION_H
-#define INTERPRETER_FIELDINVOCATION_H
+#include "expressions/Expression.h"
 
+#include <string>
 
-class FieldInvocation {
+class FieldInvocation: public Expression {
+public:
+    FieldInvocation(Expression* expression, const std::string& field_name);
+    void Accept(Visitor* visitor);
 
+    Expression* expression_;
+    std::string field_name_;
 };
-
-
-#endif //INTERPRETER_FIELDINVOCATION_H

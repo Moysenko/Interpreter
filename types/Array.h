@@ -1,14 +1,13 @@
-//
-// Created by moysenko on 01.03.2021.
-//
+#pragma once
 
-#ifndef INTERPRETER_ARRAY_H
-#define INTERPRETER_ARRAY_H
+#include "Types.h"
+#include "expressions/Expression.h"
 
+class Array: public Expression {
+public:
+    Array(Type* array_type, Expression* expression);
+    void Accept(Visitor* visitor);
 
-class Array {
-
+    Type* type_;
+    Expression* expression_;
 };
-
-
-#endif //INTERPRETER_ARRAY_H

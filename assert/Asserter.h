@@ -2,9 +2,9 @@
 
 #include "expressions/Expression.h"
 
-class Assert: public Expression {
+class Asserter: public Expression {
 public:
-    Assert(Expression* expression);
+    Asserter(Expression* expression);
     void Accept(Visitor* visitor);
 
     Expression* expression_;

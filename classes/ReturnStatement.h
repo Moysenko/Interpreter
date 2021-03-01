@@ -1,14 +1,14 @@
-//
-// Created by moysenko on 01.03.2021.
-//
+#pragma once
 
-#ifndef INTERPRETER_RETURNSTATEMENT_H
-#define INTERPRETER_RETURNSTATEMENT_H
+#include "expressions/Expression.h"
+#include "ClassFields.h"
 
+#include <string>
 
-class ReturnStatement {
+class ReturnStatement: public Expression {
+public:
+    ReturnStatement(Expression* expression);
+    void Accept(Visitor* visitor);
 
+    Expression* expression_;
 };
-
-
-#endif //INTERPRETER_RETURNSTATEMENT_H

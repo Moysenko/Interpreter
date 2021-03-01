@@ -1,7 +1,6 @@
 #pragma once
 
 #include "expressions/Expression.h"
-
 #include <string>
 
 class Printer: public Expression {

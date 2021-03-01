@@ -1,3 +1,5 @@
+#pragma once
+
 #include "types/Types.h"
 #include "expressions/Expression.h"
 

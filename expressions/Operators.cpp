@@ -63,7 +63,16 @@ void NotEqualExpression::Accept(Visitor* visitor) {
     visitor->Visit(this);
 }
 
-NegExpression::NegExpression(Expression* other_exp): exp(other_exp) {}
+NegExpression::NegExpression(
+    Expression* other_exp
+): exp(other_exp) {}
 void NegExpression::Accept(Visitor* visitor) {
+    visitor->Visit(this);
+}
+
+GetElement::GetElement(
+    Expression *expression, Expression *index
+): expression_(expression), index_(index) {}
+void GetElement::Accept(Visitor *visitor) {
     visitor->Visit(this);
 }

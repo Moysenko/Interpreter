@@ -1,8 +1,8 @@
-#include "Assert.h"
+#include "Asserter.h"
 
-Assert::Assert(Expression *expression) :
+Asserter::Asserter(Expression *expression) :
     expression_(expression) {}
 
-void Assert::Accept(Visitor *visitor) {
+void Asserter::Accept(Visitor *visitor) {
     visitor->Visit(this);
 }

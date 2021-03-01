@@ -1,14 +1,19 @@
-//
-// Created by moysenko on 01.03.2021.
-//
+#pragma once
 
-#ifndef INTERPRETER_METHOD_H
-#define INTERPRETER_METHOD_H
+#include "expressions/Expression.h"
+#include "types/Types.h"
 
+#include <string>
 
-class Method {
+class Method: public Expression {
+public:
+    Method(
+            Type* type_name,
+            const std::string& name,
+            StatementSequence* statements);
+    void Accept(Visitor* visitor);
 
+    Type* return_type_;
+    std::string name_;
+    StatementSequence* statements_;
 };
-
-
-#endif //INTERPRETER_METHOD_H

@@ -30,6 +30,15 @@
     class Statement;
     class StatementSequence;
     class Printer;
+    class Asserter;
+    class Class;
+    class Method;
+    class ClassFields;
+    class MethodInvocation;
+    class FieldInvocation;
+    class ReturnStatement;
+    class Array;
+    class Pointer;
 
     class Program;
     class Type;
@@ -60,7 +69,16 @@
     #include "loops/WhileLoop.h"
     #include "loops/ForLoop.h"
     #include "system_out/Printer.h"
+    #include "assert/Asserter.h"
     #include "Program.h"
+    #include "classes/Class.h"
+    #include "classes/Method.h"
+    #include "classes/ClassFields.h"
+    #include "classes/MethodInvocation.h"
+    #include "classes/FieldInvocation.h"
+    #include "classes/ReturnStatement.h"
+    #include "types/Array.h"
+    #include "types/Pointer.h"
 
     static yy::parser::symbol_type yylex(Scanner &scanner, Driver& driver) {
         return scanner.ScanToken();
@@ -95,6 +113,7 @@
     YOUT "out"
     YPRINT "print"
     YPRINTLN "println"
+    YASSERT "assert"
     YPUBLIC "public"
     YSTATIC "static"
     YCLASS "class"
@@ -103,6 +122,9 @@
     YBOOLEAN "Boolean"
     YVOID "void"
     ARGS "args"  // presently let args be special token
+    YTHIS "this"
+    RETURN "return"
+    YNEW "new"
 
     TRUE "true"
     FALSE "false"
@@ -119,6 +141,7 @@
 
     YFOR "for"
     YWHILE "while"
+
 ;
 
 
@@ -134,10 +157,15 @@
 %nterm <StatementSequence*> statement_sequence
 %nterm <Statement*> statement
 %nterm <Printer*> print
+%nterm <Asserter*> assert
 %nterm <BoolExpression*> bool_exp
 %nterm <IfStatement*> if_statement
 %nterm <WhileLoop*> while_loop
 %nterm <ForLoop*> for_loop
+%nterm <Method*> method_decl
+%nterm <Class*> class_decl
+%nterm <ClassFields*> class_fields
+%nterm <ReturnStatement*> return_statement
 
 %%
 %start unit;
@@ -154,16 +182,40 @@ statement_sequence:
 
 statement:
     print ";" { $$ = new Statement($1); }
-    | instantiation ";" {$$ = new Statement($1); }
+    | assert ";" { $$ = new Statement($1); }
+    | instantiation ";" { $$ = new Statement($1); }
+    | method_decl ";" { $$ = new Statement($1); }
+    | class_decl ";" { $$ = new Statement($1); }
     | assignment ";" { $$ = new Statement($1); }
     | exp ";" { $$ = new Statement($1); }
     | if_statement { $$ = new Statement($1); }
     | while_loop { $$ = new Statement($1); }
-    | for_loop { $$ = new Statement($1); };
+    | "{" statement_sequence "}" { $$ = new Statement($2); }
+    | for_loop { $$ = new Statement($1); }
+    | return_statement ";" { $$ = new Statement($1); } ;
+
+return_statement:
+    "return" exp ";" { $$ = new ReturnStatement($2); };
+
+method_decl:
+    "public" var_type "identifier" "(" ")" "{"
+        statement_sequence
+     "}" { $$ = new Method($2, $3, $7); };
+
+class_decl:
+    "class" "identifier" "{" class_fields "}" { $$ = new Class($2, $4); };
+
+class_fields:
+    %empty { $$ = new ClassFields(); }
+    | class_fields method_decl { $1->AddField($2); $$ = $1; }
+    | class_fields instantiation { $1->AddField($2); $$ = $1; };
 
 print:
     "System" "." "out" "." "print" "(" exp ")" { $$ = new Printer($7, false); }
     | "System" "." "out" "." "println" "(" exp ")" { $$ = new Printer($7, true); };
+
+assert:
+    "assert" "(" exp ")" { $$ = new Asserter($3); };
 
 instantiation:
     var_type "identifier" "=" exp { $$ = new Instantiation($1, $2, $4); }
@@ -215,7 +267,12 @@ exp:
     | exp ">" exp { $$ = new LessExpression($3, $1); }
     | exp "==" exp { $$ = new EqualExpression($1, $3); }
     | exp "!=" exp { $$ = new NotEqualExpression($1, $3); }
-    | "!" exp { $$ = new NegExpression($2); };
+    | "!" exp { $$ = new NegExpression($2); }
+    | exp "." "identifier" "(" ")" { $$ = new MethodInvocation($1, $3); }
+    | exp "." "identifier" { $$ = new FieldInvocation($1, $3); }
+    | exp "[" exp "]" { $$ = new GetElement($1, $3); }
+    | "new" var_type "[" exp "]" { $$ = new Array($2, $4); }
+    | "new" var_type "(" ")" { $$ = new Pointer($2); };
 
 bool_exp:
     "true" { $$ = new BoolExpression(true); }

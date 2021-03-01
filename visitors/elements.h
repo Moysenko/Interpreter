@@ -22,4 +22,16 @@
 
 #include "system_out/Printer.h"
 
+#include "classes/Class.h"
+#include "classes/Method.h"
+#include "classes/ClassFields.h"
+#include "classes/MethodInvocation.h"
+#include "classes/FieldInvocation.h"
+#include "classes/ReturnStatement.h"
+
+#include "assert/Asserter.h"
+
+#include "types/Array.h"
+#include "types/Pointer.h"
+
 #include "Program.h"

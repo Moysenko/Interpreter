@@ -1,14 +1,14 @@
-//
-// Created by moysenko on 01.03.2021.
-//
+#pragma once
 
-#ifndef INTERPRETER_METHODINVOCATION_H
-#define INTERPRETER_METHODINVOCATION_H
+#include "expressions/Expression.h"
 
+#include <string>
 
-class MethodInvocation {
+class MethodInvocation: public Expression {
+public:
+    MethodInvocation(Expression* expression, const std::string& method_name);
+    void Accept(Visitor* visitor);
 
+    Expression* expression_;
+    std::string method_name_;
 };
-
-
-#endif //INTERPRETER_METHODINVOCATION_H

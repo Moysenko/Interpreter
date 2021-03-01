@@ -1,5 +1,8 @@
-//
-// Created by moysenko on 01.03.2021.
-//
-
 #include "ReturnStatement.h"
+
+ReturnStatement::ReturnStatement(Expression *expression) :
+    expression_(expression) {}
+
+void ReturnStatement::Accept(Visitor *visitor) {
+    visitor->Visit(this);
+}

@@ -1,14 +1,17 @@
-//
-// Created by moysenko on 01.03.2021.
-//
+#pragma once
 
-#ifndef INTERPRETER_CLASSFIELDS_H
-#define INTERPRETER_CLASSFIELDS_H
+#include "expressions/Expression.h"
+#include "Method.h"
+#include "instantiations/Instantiation.h"
 
+#include <vector>
+#include <variant>
 
-class ClassFields {
+class ClassFields : public Expression {
+public:
+    void AddField(Method* method);
+    void AddField(Instantiation* instantiation);
+    void Accept(Visitor* visitor);
 
+    std::vector<std::variant<Method*, Instantiation*>> fields_;
 };
-
-
-#endif //INTERPRETER_CLASSFIELDS_H

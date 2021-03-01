@@ -1,5 +1,8 @@
-//
-// Created by moysenko on 01.03.2021.
-//
-
 #include "FieldInvocation.h"
+
+FieldInvocation::FieldInvocation(Expression *expression, const std::string &field_name) :
+    expression_(expression), field_name_(field_name){}
+
+void FieldInvocation::Accept(Visitor *visitor) {
+    visitor->Visit(this);
+}
