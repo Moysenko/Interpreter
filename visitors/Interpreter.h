@@ -19,6 +19,7 @@ class Interpreter : public Visitor {
     void Visit(MulExpression* expression) override;
     void Visit(DivExpression* expression) override;
     void Visit(IdentExpression* expression) override;
+    void Visit(GetElement* expression) override;
     void Visit(Instantiation* instantiation) override;
     void Visit(Assignment* assignment) override;
     void Visit(AssignmentList* assignment_list) override;
@@ -28,6 +29,15 @@ class Interpreter : public Visitor {
     void Visit(WhileLoop* while_loop) override;
     void Visit(ForLoop* for_loop) override;
     void Visit(Printer* printer) override;
+    void Visit(Asserter* asserter) override;
+    void Visit(Class* class_decl) override;
+    void Visit(Method* method_decl) override;
+    void Visit(ClassFields* class_fields) override;
+    void Visit(MethodInvocation* method_invocation) override;
+    void Visit(FieldInvocation* field_invocation) override;
+    void Visit(ReturnStatement* return_statement) override;
+    void Visit(Array* array) override;
+    void Visit(Pointer* pointer) override;
     void Visit(Program* program) override;
 
     int GetResult(Program* program);

@@ -1,5 +1,4 @@
 #include "Interpreter.h"
-
 #include "elements.h"
 
 #include <iostream>
@@ -165,6 +164,19 @@ void Interpreter::Visit(DivExpression* expression) {
     }
 }
 
+void Interpreter::Visit(GetElement* expression) {
+    expression->expression_->Accept(this);
+    if (std::holds_alternative<std::string>(tos_value_)) {
+        std::string value = std::get<std::string>(tos_value_);
+        expression->index_->Accept(this);
+        if (!std::holds_alternative<int>(tos_value_)) {
+            SetTosValue(value[std::get<int>(tos_value_)]);
+        }
+    } else {
+        throw std::invalid_argument("inappropriate argument for operator[]");
+    }
+}
+
 void Interpreter::Visit(IdentExpression* expression) {
     SetTosValue(variables_[expression->ident_]);
 }
@@ -206,9 +218,11 @@ void Interpreter::Visit(Statement* statement) {
         std::get<WhileLoop*>(statement->link)->Accept(this);
     } else if (std::holds_alternative<ForLoop*>(statement->link)) {
         std::get<ForLoop*>(statement->link)->Accept(this);
+    } else if (std::holds_alternative<StatementSequence*>(statement->link)) {
+        std::get<StatementSequence*>(statement->link)->Accept(this);
     } else if (std::holds_alternative<Expression*>(statement->link)) {
         std::get<Expression*>(statement->link)->Accept(this);
-    } 
+    }
 }
 
 void Interpreter::Visit(StatementSequence* statement_sequence) {
@@ -221,7 +235,7 @@ void Interpreter::Visit(StatementSequence* statement_sequence) {
 void Interpreter::Visit(IfStatement* if_statement) {
     if_statement->condition_->Accept(this);
     if (!std::holds_alternative<bool>(tos_value_)) {
-        throw std::invalid_argument("inappropriate contidion for \"if\" statement");
+        throw std::invalid_argument("inappropriate condition for \"if\" statement");
     }
 
     if (std::get<bool>(tos_value_)) {
@@ -238,7 +252,7 @@ void Interpreter::Visit(IfStatement* if_statement) {
 void Interpreter::Visit(WhileLoop* while_loop) {
     while_loop->condition_->Accept(this);
     if (!std::holds_alternative<bool>(tos_value_)) {
-        throw std::invalid_argument("inappropriate contidion for while loop");
+        throw std::invalid_argument("inappropriate condition for while loop");
     }
 
     while (std::get<bool>(tos_value_)) {
@@ -252,7 +266,7 @@ void Interpreter::Visit(WhileLoop* while_loop) {
 void Interpreter::Visit(ForLoop* for_loop) {
     for_loop->condition_->Accept(this);
     if (!std::holds_alternative<bool>(tos_value_)) {
-        throw std::invalid_argument("inappropriate contidion for for loop");
+        throw std::invalid_argument("inappropriate condition for for loop");
     }
 
     while (std::get<bool>(tos_value_)) {
@@ -281,6 +295,30 @@ void Interpreter::Visit(Printer* printer) {
 
     UnsetTosValue();
 }
+
+void Interpreter::Visit(Asserter *asserter) {
+    asserter->expression_->Accept(this);
+
+    if (std::holds_alternative<bool>(tos_value_)) {
+        if (!std::get<bool>(tos_value_)) {
+            throw std::logic_error("assert failed: condition is false");
+        }
+    } else {
+        throw std::invalid_argument("inappropriate condition for assert");
+    }
+
+    UnsetTosValue();
+}
+
+void Interpreter::Visit(Class* class_decl) { /* TODO: implement */ }
+void Interpreter::Visit(Method* method_decl) { /* TODO: implement */ }
+void Interpreter::Visit(ClassFields* class_fields) { /* TODO: implement */ }
+void Interpreter::Visit(MethodInvocation* method_invocation) { /* TODO: implement */ }
+void Interpreter::Visit(FieldInvocation* field_invocation) { /* TODO: implement */ }
+void Interpreter::Visit(ReturnStatement* returnStatement) { /* TODO: implement */ }
+
+void Interpreter::Visit(Array* array) { /* TODO: implement */ }
+void Interpreter::Visit(Pointer* pointer) { /* TODO: implement */ }
 
 void Interpreter::Visit(Program* program) {
     program->statements_->Accept(this);

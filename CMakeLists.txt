@@ -51,6 +51,15 @@ add_executable(
     instantiations/Instantiation.cpp
     visitors/Interpreter.cpp
     Program.cpp
+    assert/Asserter.cpp
+    classes/Class.cpp
+    classes/ClassFields.cpp
+    classes/Method.cpp
+    classes/MethodInvocation.cpp
+    classes/FieldInvocation.cpp
+    classes/ReturnStatement.cpp
+    types/Array.cpp
+    types/Pointer.cpp
 )
 
 target_include_directories(

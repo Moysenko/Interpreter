@@ -81,3 +81,11 @@ class NegExpression: public Expression {
     void Accept(Visitor* visitor) override;
     Expression* exp;
 };
+
+class GetElement: public Expression {
+ public:
+    GetElement(Expression* expression, Expression* index);
+    void Accept(Visitor* visitor) override;
+    Expression* expression_;
+    Expression* index_;
+};

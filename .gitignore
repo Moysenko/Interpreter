@@ -5,5 +5,7 @@ parser.png
 parser.hh
 scanner.cpp
 .vscode/
+.idea/
 bin/
 build/
+cmake-build-debug/

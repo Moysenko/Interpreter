@@ -18,6 +18,7 @@ class Visitor {
     virtual void Visit(MulExpression* expression) = 0;
     virtual void Visit(DivExpression* expression) = 0;
     virtual void Visit(IdentExpression* expression) = 0;
+    virtual void Visit(GetElement* expression) = 0;
     virtual void Visit(Instantiation* instantiation) = 0;
     virtual void Visit(Assignment* assignment) = 0;
     virtual void Visit(AssignmentList* assignment_list) = 0;
@@ -27,5 +28,14 @@ class Visitor {
     virtual void Visit(WhileLoop* while_loop) = 0;
     virtual void Visit(ForLoop* for_loop) = 0;
     virtual void Visit(Printer* printer) = 0;
+    virtual void Visit(Asserter* asserter) = 0;
+    virtual void Visit(Class* class_decl) = 0;
+    virtual void Visit(Method* method_decl) = 0;
+    virtual void Visit(ClassFields* class_fields) = 0;
+    virtual void Visit(MethodInvocation* method_invocation) = 0;
+    virtual void Visit(FieldInvocation* field_invocation) = 0;
+    virtual void Visit(ReturnStatement* return_statement) = 0;
+    virtual void Visit(Array* array) = 0;
+    virtual void Visit(Pointer* pointer) = 0;
     virtual void Visit(Program* program) = 0;
 };

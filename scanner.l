@@ -68,10 +68,16 @@ string \"[^\"]*\"
 "print"    return yy::parser::make_YPRINT  (loc);
 "println"  return yy::parser::make_YPRINTLN  (loc);
 
+"assert"  return yy::parser::make_YASSERT   (loc);
+
 "public"   return yy::parser::make_YPUBLIC (loc);
 "static"   return yy::parser::make_YSTATIC (loc);
 "class"    return yy::parser::make_YCLASS  (loc);
 "args"     return yy::parser::make_ARGS    (loc);
+"this"     return yy::parser::make_YTHIS   (loc);
+"return"   return yy::parser::make_RETURN  (loc);
+
+"new"      return yy::parser::make_YNEW    (loc);
 
 "String"   return yy::parser::make_YSTRING (loc);
 "Integer"  return yy::parser::make_YINT    (loc);

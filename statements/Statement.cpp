@@ -8,11 +8,17 @@ Statement::Statement(Instantiation* other_link): link(other_link) {}
 
 Statement::Statement(Printer* other_link): link(other_link) {}
 
+Statement::Statement(Asserter *other_link) {}
+
 Statement::Statement(IfStatement* other_link): link(other_link) {}
 
 Statement::Statement(WhileLoop* other_link): link(other_link) {}
 
 Statement::Statement(ForLoop* other_link): link(other_link) {}
+
+Statement::Statement(ReturnStatement* other_link): link(other_link) {}
+
+Statement::Statement(StatementSequence* other_link): link(other_link) {}
 
 void Statement::Accept(Visitor* visitor) {
     visitor->Visit(this);
